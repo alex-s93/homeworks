@@ -1,4 +1,4 @@
-package com.alevel.homework3.task1;
+package com.alevel.homework3.task2;
 
 public class GeometricAverage {
     public static void main(String[] args) {
