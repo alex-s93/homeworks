@@ -20,8 +20,6 @@ public class TheSameNumbers {
             }
         }
 
-        System.out.println(Arrays.deepToString(verifiedNumbers));
-
         int maxCount = verifiedNumbers[0][1];
         int popularNumber = verifiedNumbers[0][0];
 
