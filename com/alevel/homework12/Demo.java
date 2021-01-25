@@ -20,7 +20,11 @@ public class Demo {
         return stringBuilder.toString();
     }
 
-    public static void main(String[] args) throws IOException {
-        System.out.println(read("/Users/qa/test.txt"));
+    public static void main(String[] args) {
+        try{
+            System.out.println(read("/Users/non_exist_path/test.txt"));
+        } catch(IOException e) {
+            System.out.println("Message: " + e.getMessage());
+        }
     }
 }
