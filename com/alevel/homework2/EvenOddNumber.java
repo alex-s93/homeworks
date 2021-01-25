@@ -1,3 +1,5 @@
+package com.alevel.homework2;
+
 public class EvenOddNumber {
     public static void main(String[] args) {
         int number = 45;

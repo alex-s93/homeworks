@@ -1,3 +1,5 @@
+package com.alevel.homework2;
+
 public class SmallestModulo {
     public static void main(String[] args) {
         double numberOne = -19.22;
