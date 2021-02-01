@@ -1,12 +1,11 @@
 package com.alevel.homework15.page41;
 
-import org.w3c.dom.ls.LSOutput;
-
 public class Packer {
 
     public static void main(String[] args) {
         String a = "a";
-        Integer b = 10;
+        Object b = 10;
+
         Packer packer = new Packer();
         Box<Food> goodsBox = new Box<>();
         Box<Food> foodBox = new Box<>();
@@ -14,25 +13,24 @@ public class Packer {
         Box<Cake> cakeBox = new Box<>();
         Box<Pie> pieBox = new Box<>();
         Box<Tart> tartBox = new Box<>();
+
         packer.repackage(foodBox, cakeBox);
-//        packer.repackage(cakeBox, foodBox);
+//        packer.repackage(a, b);
 //        packer.repackage(bakeryBox, goodsBox);
+//        packer.repackage(bakeryBox, foodBox);
+
     }
 
-    public void repackage(Box<? super Bakery> to, Box<? extends Food> from) {
-        Box<? super Bakery> temp = to;
-        to.put(from);
-        from.put((Box<? extends Food>) temp);
+    public <T> void repackage(Box<? super T> to, Box<? extends T> from) {
+        to.put(from.get());
     }
-
 }
 
 class Box<T> {
-
     private T item;
 
-    public void put(Box<? extends Food> item) {
-        this.item = (T) item;
+    public void put(T item) {
+        this.item = item;
     }
 
     public T get() {
@@ -43,10 +41,10 @@ class Box<T> {
 class Goods {
 }
 
-class Food extends Goods{
+class Food extends Goods {
 }
 
-class Bakery extends Food{
+class Bakery extends Food {
 }
 
 class Cake extends Bakery {
