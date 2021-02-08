@@ -1,8 +1,8 @@
 package com.alevel.homework16;
 
 public class Category {
-    String name;
-    Long categoryId;
+    private String name;
+    private Long categoryId;
 
     public Category(String name, Long categoryId) {
         this.name = name;

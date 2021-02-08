@@ -3,9 +3,9 @@ package com.alevel.homework16;
 import java.math.BigDecimal;
 
 public class Product {
-    String name;
-    BigDecimal price;
-    Category category;
+    private String name;
+    private BigDecimal price;
+    private Category category;
 
     public Product(String name, BigDecimal price, Category category) {
         this.name = name;
