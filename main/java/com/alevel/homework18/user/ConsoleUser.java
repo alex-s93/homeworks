@@ -19,7 +19,7 @@ public class ConsoleUser {
                 Helper.serialize(user, file);
             case Helper.ACTION_SHOW:
                 try {
-                    System.out.println(Helper.deserialization(file));
+                    Helper.deserialization(file);
                 } catch (FileNotFoundException e) {
                     System.out.println("User \"" + consoleData.get(Helper.FIELD_USER) + "\"  not found");
                 } catch (IOException e) {
