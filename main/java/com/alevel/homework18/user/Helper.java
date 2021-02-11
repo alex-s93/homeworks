@@ -50,7 +50,7 @@ class Helper {
                 map.put(FIELD_ACTION, ACTION_SHOW);
                 break;
             } else {
-                throw new RuntimeException("Input is blank");
+                throw new RuntimeException("Input does not contain existing command");
             }
         }
         return map;
