@@ -1,7 +1,5 @@
 package com.alevel.homework5;
 
-import java.util.Arrays;
-
 public class TheSameNumbers {
     public static void main(String[] args) {
         int[] array = {5, 7, 8, 5, 7, 1, 5, 7, 8, 5, 7};
