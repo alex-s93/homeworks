@@ -47,9 +47,9 @@ insert into registration (student_id, module_id) values (3, 1);
 
 # Check results of SQL queries:
 select first_name, last_name, module_title
-from registration
-         join Student S on registration.student_id = S.student_id
-         join Module M on registration.module_id = M.module_id;
+from registration as r
+         join Student as s on r.student_id = s.student_id
+         join Module as m on r.module_id = m.module_id;
 
 # Result:
 # +------------+-----------+--------------+
