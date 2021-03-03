@@ -1,4 +1,4 @@
-package com.alevel.homework20.task3;
+package com.alevel.homework20.annotations;
 
 import java.lang.annotation.*;
 

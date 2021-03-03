@@ -1,5 +1,7 @@
 package com.alevel.homework20.task2;
 
+import com.alevel.homework20.annotations.Value;
+
 public class ClassForAnnotation {
     @Value("123")
     private String id;

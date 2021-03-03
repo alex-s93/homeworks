@@ -1,77 +1,43 @@
 package com.alevel.homework20.task4;
-
-import com.alevel.homework20.task3.Service;
+import com.alevel.homework20.task2.FieldInitialization;
+import com.alevel.homework20.task4.helpers.ClassHelper;
+import com.alevel.homework20.task4.helpers.FileHelper;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
+
 public class ScanClasses {
-    private static List<File> javaFiles = new LinkedList<>();
 
-    public static void main(String[] args) throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
+    public static void main(String[] args) throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         File dir = new File("src");
-        LinkedList<File> files = createFileList(dir);
-        List<File> javaFiles = explore(files);
 
-        System.out.println(getListOfInitializedClasses(javaFiles));
+        LinkedList<File> files = FileHelper.createFileList(dir);
+        List<File> javaFiles = FileHelper.explore(files);
+
+        Method initMethod = ClassHelper.getInitMethod(javaFiles);
+        Map<String, Object> objects = ClassHelper.getListOfInitializedClasses(javaFiles);
+
+        invokeMethodForObjects(initMethod, objects);
+
+        initializeFieldWithAnnotationValue(objects);
     }
 
-    private static <T> T createInstance(Class<T> className) {
-        try {
-            Constructor constructor = className.getConstructor();
-            T entity = (T) constructor.newInstance();
-            return entity;
-        } catch (NoSuchMethodException e) {
-            System.out.println("Error: No default constructor");
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            System.out.println("Error: Object can't be created");
+    private static void invokeMethodForObjects(Method method, Map<String, Object> objects) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        for (Map.Entry<String, Object> entry : objects.entrySet()) {
+            method.invoke(method.getDeclaringClass().getConstructor().newInstance(), entry.getValue());
         }
-        return null;
     }
 
-    private static <T> Map<String, T> getListOfInitializedClasses(List<File> files) throws ClassNotFoundException {
-        Map<String, T> initializedClasses = new TreeMap<>();
-        for (File file : files) {
-            String fileName = getClassNameFromFile(file);
-            Class<?> classObj = Class.forName(fileName);
-            if (classObj.isAnnotationPresent(Service.class)) {
-                T entity = (T) createInstance(classObj);
-                String className = classObj.getSimpleName();
-                initializedClasses.put(className, entity);
-            }
-
+    private static void initializeFieldWithAnnotationValue(Map<String, Object> objects) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        for (Map.Entry<String, Object> entry : objects.entrySet()) {
+            FieldInitialization.initializeFields(entry.getValue().getClass());
         }
-        return initializedClasses;
     }
 
-    private static String getClassNameFromFile(File file) {
-        String projectPath = System.getProperty("user.dir") + "/";
-        String projectStructurePath = "src/main/java/";
 
-        return file.getAbsolutePath()
-                .replace(projectPath, "")
-                .replace(projectStructurePath, "")
-                .replace(".java", "")
-                .replace("/", ".");
-    }
-
-    private static LinkedList<File> createFileList(File file) {
-        return new LinkedList<>(Arrays.asList(file.listFiles()));
-    }
-
-    private static List<File> explore(List<File> files) {
-        for (File item : files) {
-            if (item.isFile()) {
-                if (item.getName().contains(".java")) {
-                    javaFiles.add(item);
-                }
-            } else {
-                explore(createFileList(item));
-            }
-        }
-        return javaFiles;
-    }
 }

@@ -1,4 +1,4 @@
-package com.alevel.homework20.task2;
+package com.alevel.homework20.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

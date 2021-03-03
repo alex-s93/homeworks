@@ -1,5 +1,7 @@
 package com.alevel.homework20.task3;
 
+import com.alevel.homework20.annotations.Service;
+
 @Service
 public class TestClass {
     public TestClass() {

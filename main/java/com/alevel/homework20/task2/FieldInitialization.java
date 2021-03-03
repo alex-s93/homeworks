@@ -1,5 +1,7 @@
 package com.alevel.homework20.task2;
 
+import com.alevel.homework20.annotations.Value;
+
 import java.lang.reflect.Field;
 
 public class FieldInitialization {
@@ -13,7 +15,7 @@ public class FieldInitialization {
         System.out.println(classForAnnotation);
     }
 
-    private static <T> void initializeFields(T name) throws IllegalAccessException {
+    public static <T> void initializeFields(T name) throws IllegalAccessException {
         Field[] fields = name.getClass().getDeclaredFields();
         for (Field field: fields) {
             if (field.isAnnotationPresent(Value.class)) {
