@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class UserDao {
     private static final String INSERT_STUDENT = "INSERT INTO users (first_name, last_name, birthday, address) " +
@@ -43,6 +44,15 @@ public class UserDao {
         } catch (SQLException sqlException) {
             throw new RuntimeException(sqlException);
         }
+    }
+
+    public static User buildUser(String firstName, String lastName, LocalDate birthday, String address) {
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setBirthday(birthday);
+        user.setAddress(address);
+        return user;
     }
 
 }

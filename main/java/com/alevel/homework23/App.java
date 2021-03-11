@@ -1,9 +1,6 @@
 package com.alevel.homework23;
 
-import com.alevel.homework23.dao.CategoryDao;
-import com.alevel.homework23.dao.OrderDao;
-import com.alevel.homework23.dao.ProductDao;
-import com.alevel.homework23.dao.UserDao;
+import com.alevel.homework23.dao.*;
 import com.alevel.homework23.dbHelper.*;
 import com.alevel.homework23.entities.*;
 
@@ -22,10 +19,10 @@ public class App {
         TableFactory.createOrderTable(dbConnector);
 
         // USERS
-        User userOne = buildUser("Alex", "Solodkov", LocalDate.now().minusYears(20), "Peremohy avenue 72");
-        User userTwo = buildUser("Michael", "Pupkin", LocalDate.now().minusYears(22), "Heroev street 37");
-        User userThree = buildUser("Daria", "Mishina", LocalDate.now().minusYears(17), "Landau avenue 22");
-        User userFour = buildUser("Oleksandr", "Zavgorodniy", LocalDate.now().minusYears(31), "Independence avenue 98");
+        User userOne = UserDao.buildUser("Alex", "Solodkov", LocalDate.now().minusYears(20), "Peremohy avenue 72");
+        User userTwo = UserDao.buildUser("Michael", "Pupkin", LocalDate.now().minusYears(22), "Heroev street 37");
+        User userThree = UserDao.buildUser("Daria", "Mishina", LocalDate.now().minusYears(17), "Landau avenue 22");
+        User userFour = UserDao.buildUser("Oleksandr", "Zavgorodniy", LocalDate.now().minusYears(31), "Independence avenue 98");
 
         UserDao.insertUser(dbConnector, userOne);
         UserDao.insertUser(dbConnector, userTwo);
@@ -38,10 +35,10 @@ public class App {
         userFour.setId(UserDao.getUserId(dbConnector, userFour));
 
         // CATEGORIES
-        Category shoes = buildCategory("shoes");
-        Category shirts = buildCategory("shirts");
-        Category pants = buildCategory("pants");
-        Category hats = buildCategory("hats");
+        Category shoes = CategoryDao.buildCategory("shoes");
+        Category shirts = CategoryDao.buildCategory("shirts");
+        Category pants = CategoryDao.buildCategory("pants");
+        Category hats = CategoryDao.buildCategory("hats");
 
         CategoryDao.insertCategory(dbConnector, shoes);
         CategoryDao.insertCategory(dbConnector, shirts);
@@ -54,10 +51,10 @@ public class App {
         hats.setId(CategoryDao.getCategoryId(dbConnector, hats));
 
         // PRODUCTS
-        Product sneakers = buildProduct(shoes, "sneakers", 97.50);
-        Product poloShirt = buildProduct(shirts, "Polo shirt", 29.60);
-        Product jeans = buildProduct(pants, "Jeans", 59.25);
-        Product cap = buildProduct(hats, "Cap", 17.75);
+        Product sneakers = ProductDao.buildProduct(shoes, "sneakers", 97.50);
+        Product poloShirt = ProductDao.buildProduct(shirts, "Polo shirt", 29.60);
+        Product jeans = ProductDao.buildProduct(pants, "Jeans", 59.25);
+        Product cap = ProductDao.buildProduct(hats, "Cap", 17.75);
 
         ProductDao.insertProduct(dbConnector, sneakers);
         ProductDao.insertProduct(dbConnector, poloShirt);
@@ -70,10 +67,10 @@ public class App {
         cap.setId(ProductDao.getProductId(dbConnector, cap));
 
         // ORDERS
-        Order orderOne = buildOrder(sneakers, userOne, Status.OPEN, 2, LocalDateTime.now());
-        Order orderTwo = buildOrder(poloShirt, userTwo, Status.IN_PROGRESS, 4, LocalDateTime.now());
-        Order orderThree = buildOrder(jeans, userThree, Status.CANCELED, 3, LocalDateTime.now());
-        Order orderFour = buildOrder(cap, userFour, Status.COMPLETED, 1, LocalDateTime.now());
+        Order orderOne = OrderDao.buildOrder(sneakers, userOne, Status.OPEN, 2, LocalDateTime.now());
+        Order orderTwo = OrderDao.buildOrder(poloShirt, userTwo, Status.IN_PROGRESS, 4, LocalDateTime.now());
+        Order orderThree = OrderDao.buildOrder(jeans, userThree, Status.CANCELED, 3, LocalDateTime.now());
+        Order orderFour = OrderDao.buildOrder(cap, userFour, Status.COMPLETED, 1, LocalDateTime.now());
 
         OrderDao.insertOrder(dbConnector, orderOne);
         OrderDao.insertOrder(dbConnector, orderTwo);
@@ -113,39 +110,5 @@ public class App {
         orders.add(orderThree);
         orders.add(orderFour);
         System.out.println(orders);
-
-    }
-
-    private static User buildUser(String firstName, String lastName, LocalDate birthday, String address) {
-        User user = new User();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setBirthday(birthday);
-        user.setAddress(address);
-        return user;
-    }
-
-    private static Category buildCategory(String name) {
-        Category category = new Category();
-        category.setName(name);
-        return category;
-    }
-
-    private static Product buildProduct(Category category, String name, double price) {
-        Product product = new Product();
-        product.setCategory(category);
-        product.setName(name);
-        product.setPrice(price);
-        return product;
-    }
-
-    private static Order buildOrder(Product product, User user, Status status, int count, LocalDateTime orderDate) {
-        Order order = new Order();
-        order.setProduct(product);
-        order.setUser(user);
-        order.setStatus(status);
-        order.setCount(count);
-        order.setOrderDate(orderDate);
-        return order;
     }
 }

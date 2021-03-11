@@ -2,11 +2,15 @@ package com.alevel.homework23.dao;
 
 import com.alevel.homework23.dbHelper.DBConnector;
 import com.alevel.homework23.entities.Order;
+import com.alevel.homework23.entities.Product;
+import com.alevel.homework23.entities.Status;
+import com.alevel.homework23.entities.User;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class OrderDao {
     private static final String INSERT_ORDER = "INSERT INTO orders (product_id, user_id, count, status, order_date) " +
@@ -45,5 +49,15 @@ public class OrderDao {
         } catch (SQLException sqlException) {
             throw new RuntimeException(sqlException);
         }
+    }
+
+    public static Order buildOrder(Product product, User user, Status status, int count, LocalDateTime orderDate) {
+        Order order = new Order();
+        order.setProduct(product);
+        order.setUser(user);
+        order.setStatus(status);
+        order.setCount(count);
+        order.setOrderDate(orderDate);
+        return order;
     }
 }

@@ -39,4 +39,10 @@ public class CategoryDao {
         }
     }
 
+    public static Category buildCategory(String name) {
+        Category category = new Category();
+        category.setName(name);
+        return category;
+    }
+
 }
