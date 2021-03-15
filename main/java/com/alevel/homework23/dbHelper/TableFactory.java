@@ -5,7 +5,8 @@ public class TableFactory {
             "first_name varchar(55) NOT NULL, " +
             "last_name varchar(55) NOT NULL, " +
             "address varchar(255) NOT NULL, " +
-            "birthday date " +
+            "birthday date, " +
+            "email varchar(55) NOT NULL " +
             ");";
 
     private static final String CREATE_CATEGORY_TABLE = "CREATE TABLE IF NOT EXISTS categories (category_id int AUTO_INCREMENT PRIMARY KEY, " +

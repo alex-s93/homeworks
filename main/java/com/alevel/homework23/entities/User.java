@@ -8,15 +8,17 @@ public class User {
     private String lastName;
     private String address;
     private LocalDate birthday;
+    private String email;
 
     public User() { }
 
-    public User(long id, String firstName, String lastName, String address, LocalDate birthday) {
+    public User(long id, String firstName, String lastName, String address, LocalDate birthday, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
         this.birthday = birthday;
+        this.email = email;
     }
 
     public long getId() {
@@ -59,6 +61,14 @@ public class User {
         this.birthday = birthday;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -67,6 +77,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", address='" + address + '\'' +
                 ", birthday=" + birthday +
+                ", email=" + email +
                 '}';
     }
 }
