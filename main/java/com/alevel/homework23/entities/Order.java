@@ -1,7 +1,6 @@
 package com.alevel.homework23.entities;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class Order {
     private long id;
@@ -9,9 +8,9 @@ public class Order {
     private User user;
     private int count;
     private Status status;
-    private LocalDateTime orderDate;
+    private Timestamp orderDate;
 
-    public Order(long id, Product product, User user, int count, Status status, LocalDateTime orderDate) {
+    public Order(long id, Product product, User user, int count, Status status, Timestamp orderDate) {
         this.id = id;
         this.product = product;
         this.user = user;
@@ -64,22 +63,23 @@ public class Order {
         this.status = status;
     }
 
-    public LocalDateTime getOrderDate() {
+    public Timestamp getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(LocalDateTime orderDate) {
+    public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
     }
 
     @Override
     public String toString() {
-        return "Order{" +
-                "product=" + product +
-                ", user=" + user +
-                ", count=" + count +
-                ", status='" + status + '\'' +
-                ", orderDate=" + orderDate +
-                '}';
+        return "Order info: " +
+                " | order_id=" + id +
+                " | count=" + count +
+                " | status='" + status + "'" +
+                " | orderDate='" + orderDate + "' | " +
+                product + " | " +
+                user + " |";
+
     }
 }

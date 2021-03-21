@@ -10,15 +10,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.List;
 
-public class UserExecutor {
+class UserExecutor {
     private static Scanner scanner = new Scanner(System.in);
 
     static void createUser(DBConnector dbConnector) {
         System.out.println("Enter user's email:");
         String email = scanner.nextLine();
         if (UserDao.getCountOfUsersByEmail(dbConnector, email) > 0) {
-            throw new RuntimeException("This email already exists in the database");
+            System.out.println("This email already exists in the database. Try again.");
+            return;
         }
 
         System.out.println("Enter user's first name:");
@@ -42,13 +44,13 @@ public class UserExecutor {
 
         System.out.println("Enter the email of the user you need to update:");
         String email = scanner.nextLine();
-        if (!(UserDao.getCountOfUsersByEmail(dbConnector, email) > 0)) {
-            throw new RuntimeException("User with this email is absent in the database");
+        if (UserDao.getCountOfUsersByEmail(dbConnector, email) == 0) {
+            System.out.println("User with this email is absent in the database. Try again");
+            return;
         }
 
         System.out.println("What information do you want to update? Please enter one or more parameters from the brackets" +
-                " (First name, Last name, Date of birth, Address, Email).");
-        System.out.println("Enter the word \"finish\" after entering all the values that you want");
+                " (" + Arrays.toString(userFields) + ").");
 
         Map<String, String> newValues = new HashMap<>();
         do {
@@ -64,7 +66,8 @@ public class UserExecutor {
             System.out.println("Is it all fields what you want to update?");
         } while (!scanner.nextLine().equals("yes"));
         if (newValues.size() == 0) {
-            throw new RuntimeException("Nothing to update");
+            System.out.println("Nothing to update. Try again");
+            return;
         }
         if (UserDao.updateUser(dbConnector, email, newValues)) {
             System.out.println("User with email '" + email + "' was updated successfully!");
@@ -77,13 +80,25 @@ public class UserExecutor {
         System.out.println("Enter the email of user which you want to delete:");
         String email = scanner.nextLine();
         if (!(UserDao.getCountOfUsersByEmail(dbConnector, email) > 0)) {
-            throw new RuntimeException("User with this email is absent in the database");
+            System.out.println("User with this email is absent in the database. Try again");
+            return;
         }
 
         if (UserDao.deleteUser(dbConnector, email)) {
             System.out.println("User with email '" + email + "' was deleted successfully!");
         } else {
             System.out.println("Something went wrong");
+        }
+    }
+
+    static void showUsers(DBConnector dbConnector) {
+        List<User> users = UserDao.getAll(dbConnector);
+        if (users.size() == 0) {
+            System.out.println("There are no users in the database");
+            return;
+        }
+        for (User user: users) {
+            System.out.println(user);
         }
     }
 }

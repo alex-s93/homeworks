@@ -28,12 +28,10 @@ public class Category {
         this.name = name;
     }
 
-
     @Override
     public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Category: " +
+                "{id=" + id +
+                ", name='" + name + "'}";
     }
 }

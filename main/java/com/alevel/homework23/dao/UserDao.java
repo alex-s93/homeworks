@@ -8,16 +8,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class UserDao {
     private static final String INSERT_USER = "INSERT INTO users (first_name, last_name, birthday, address, email) " +
             "VALUES (?, ?, ?, ?, ?)";
-    private static final String GET_USER_ID = "SELECT user_id FROM users WHERE first_name = ? and last_name = ? and " +
-            "birthday = ? and address = ?;";
-    private static final String GET_USER_ID_BY_EMAIL = "SELECT user_id FROM users WHERE email = ?;";
+    private static final String GET_USER_BY_EMAIL = "SELECT * FROM users WHERE email = ?;";
+    private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE user_id = ?;";
     private static final String GET_COUNT_OF_USERS_BY_EMAIL = "SELECT count(*) FROM users WHERE email = ?;";
     private static final String DELETE_USER_BY_EMAIL = "DELETE FROM users where email = ?";
+    private static final String SHOW_USERS = "SELECT * FROM users";
 
     public static void insertUser(DBConnector dbConnector, User user) {
         final PreparedStatement statement = dbConnector.getPreparedStatement(INSERT_USER);
@@ -41,7 +43,6 @@ public class UserDao {
         parameters = parameters.substring(0, parameters.length() - 2);
         String query = "UPDATE users SET " + parameters + " where email = \"" + email + "\";";
 
-        System.out.println(query);
         final PreparedStatement statement = dbConnector.getPreparedStatement(query);
         try {
             return 1 == statement.executeUpdate();
@@ -50,7 +51,7 @@ public class UserDao {
         }
     }
 
-    public static String getDataBaseFieldName(String field) {
+    private static String getDataBaseFieldName(String field) {
         String dbField = "";
         switch (field) {
             case "first name":
@@ -79,24 +80,6 @@ public class UserDao {
         }
     }
 
-    public static long getUserId(DBConnector dbConnector, User user) {
-        final PreparedStatement statement = dbConnector.getPreparedStatement(GET_USER_ID);
-        try {
-            statement.setString(1, user.getFirstName());
-            statement.setString(2, user.getLastName());
-            statement.setDate(3, Date.valueOf(user.getBirthday()));
-            statement.setString(4, user.getAddress());
-            ResultSet resultSet = statement.executeQuery();
-            long userId = 0;
-            while (resultSet.next()) {
-                userId = resultSet.getLong(1);
-            }
-            return userId;
-        } catch (SQLException sqlException) {
-            throw new RuntimeException(sqlException);
-        }
-    }
-
     public static int getCountOfUsersByEmail(DBConnector dbConnector, String email) {
         final PreparedStatement statement = dbConnector.getPreparedStatement(GET_COUNT_OF_USERS_BY_EMAIL);
         try {
@@ -112,19 +95,53 @@ public class UserDao {
         }
     }
 
-    public static long getUserIdByEmail(DBConnector dbConnector, String email) {
-        final PreparedStatement statement = dbConnector.getPreparedStatement(GET_USER_ID_BY_EMAIL);
+    public static User getUserByEmail(DBConnector dbConnector, String email) {
+        final PreparedStatement statement = dbConnector.getPreparedStatement(GET_USER_BY_EMAIL);
         try {
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
-            long userId = 0;
+            User user = null;
             while (resultSet.next()) {
-                userId = resultSet.getLong(1);
+                user = UserDao.buildUser(resultSet);
             }
-            return userId;
+            return user;
         } catch (SQLException sqlException) {
             throw new RuntimeException(sqlException);
         }
+    }
+
+    static User getUserById(DBConnector dbConnector, long user_id) {
+        final PreparedStatement statement = dbConnector.getPreparedStatement(GET_USER_BY_ID);
+        try {
+            statement.setLong(1, user_id);
+            ResultSet resultSet = statement.executeQuery();
+            User user = null;
+            while (resultSet.next()) {
+                user = UserDao.buildUser(resultSet);
+            }
+            return user;
+        } catch (SQLException sqlException) {
+            throw new RuntimeException(sqlException);
+        }
+    }
+
+    public static List<User> getAll(DBConnector dbConnector) {
+        final ResultSet resultSet = dbConnector.executeQuery(SHOW_USERS);
+
+        return processResult(resultSet);
+    }
+
+    private static List<User> processResult(ResultSet resultSet) {
+        List<User> users = new ArrayList<>();
+
+        try {
+            while (resultSet.next()) {
+                users.add(buildUser(resultSet));
+            }
+        } catch (SQLException sqlException) {
+            throw new RuntimeException(sqlException);
+        }
+        return users;
     }
 
     public static User buildUser(String firstName, String lastName, LocalDate birthday, String address, String email) {
@@ -137,4 +154,15 @@ public class UserDao {
         return user;
     }
 
+    private static User buildUser(ResultSet resultSet) throws SQLException {
+        User user = new User();
+        user.setId(resultSet.getLong("user_id"));
+        user.setFirstName(resultSet.getString("first_name"));
+        user.setLastName(resultSet.getString("last_name"));
+        user.setBirthday(resultSet.getDate("birthday").toLocalDate());
+        user.setAddress(resultSet.getString("address"));
+        user.setEmail(resultSet.getString("email"));
+
+        return user;
+    }
 }

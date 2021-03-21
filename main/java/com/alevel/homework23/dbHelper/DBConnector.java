@@ -38,7 +38,7 @@ public class DBConnector implements Closeable {
         }
     }
 
-    public int executeUpdate(String query) {
+    int executeUpdate(String query) {
         try {
             return connection.createStatement().executeUpdate(query);
         } catch (SQLException sqlException) {

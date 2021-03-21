@@ -25,9 +25,9 @@ public class TableFactory {
             "user_id int NOT NULL, " +
             "count int NOT NULL, " +
             "status varchar(25) NOT NULL, " +
-            "order_date date NOT NULL, " +
+            "order_date timestamp NOT NULL, " +
             "FOREIGN KEY (product_id) REFERENCES products (product_id), " +
-            "FOREIGN KEY (user_id) REFERENCES users (user_id)" +
+            "FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE" +
             ");";
 
     public static void createUserTable(DBConnector dbConnector) {
