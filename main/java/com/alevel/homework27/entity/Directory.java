@@ -99,23 +99,23 @@ public class Directory {
     public String toString() {
         String[] paths = path.split("/");
         String dirName = paths[paths.length - 1];
-        String result = "'" + dirName + "': {";
+        StringBuilder result = new StringBuilder("'" + dirName + "': {");
         if (directories.size() != 0) {
             for (Directory dir : directories) {
-                result += dir + ", ";
+                result.append(dir).append(", ");
             }
         }
         if (files.size() != 0) {
             for (File file : files) {
                 if (files.indexOf(file) == (files.size() - 1)) {
-                    result += "'" + file.getName() + "'";
+                    result.append("'").append(file.getName()).append("'");
                 } else {
-                    result += "'" + file.getName() + "', ";
+                    result.append("'").append(file.getName()).append("', ");
                 }
             }
         }
-        result += "}";
-        return result;
+        result.append("}");
+        return result.toString();
     }
 
 

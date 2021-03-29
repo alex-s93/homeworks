@@ -37,18 +37,14 @@ class ConsoleExecutor {
         System.out.println(dir.getPath());
     }
 
-    static String makeSpace(int a) {
-        String b = "";
-        for (int e = 0; e < a; e++) {
-            b += "   ";
-        }
-        return b;
+    private static String makeSpace(int a) {
+        return "   ".repeat(Math.max(0, a));
     }
 
-    static void printTree(String string) {
+    private static void printTree(String string) {
         int space = 0;
-        String s = string.replace(" ", "");
-        String newString = "";
+        String s = string.trim();
+        StringBuilder newString = new StringBuilder();
 
         for (int i = 0; i < s.length(); i++) {
             String a = String.valueOf(s.charAt(i));
@@ -65,7 +61,7 @@ class ConsoleExecutor {
                     a += "\n" + makeSpace(space);
                     break;
             }
-            newString += a;
+            newString.append(a);
         }
         System.out.println(newString);
     }
