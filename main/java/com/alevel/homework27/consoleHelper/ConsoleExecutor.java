@@ -29,6 +29,15 @@ class ConsoleExecutor {
     }
 
     static void showCurrentDirTree(Directory dir) {
+        Directory.setWithStringsState(false);
+        dir.setDirsAndFiles();
+        String string = "{"+dir.toString()+"}";
+        printTree(string);
+    }
+
+    static void showCurrentDirTreeWithAmountOfFileStrings(Directory dir) {
+        Directory.setWithStringsState(true);
+        dir.setDirsAndFiles();
         String string = "{"+dir.toString()+"}";
         printTree(string);
     }

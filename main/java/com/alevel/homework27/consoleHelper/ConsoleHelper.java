@@ -1,4 +1,5 @@
 package com.alevel.homework27.consoleHelper;
+
 import com.alevel.homework27.entity.Directory;
 
 import static com.alevel.homework27.consoleHelper.Action.*;
@@ -28,8 +29,11 @@ public class ConsoleHelper {
                 case ACTION_CD:
                     ConsoleExecutor.changeDirectory(dir);
                     break;
+                case ACTION_SHOW_TREE_WITH_STRINGS_IN_FILE:
+                    ConsoleExecutor.showCurrentDirTreeWithAmountOfFileStrings(dir);
+                    break;
             }
-        } while(!action.equals(ACTION_FINISH_APPLICATION));
+        } while (!action.equals(ACTION_FINISH_APPLICATION));
     }
 
 }

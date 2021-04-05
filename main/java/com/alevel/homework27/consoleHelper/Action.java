@@ -4,6 +4,7 @@ public enum Action {
     ACTION_CREATE_DIR ("create directory"),
     ACTION_CREATE_FILE ("create file"),
     ACTION_SHOW_TREE ("show tree of dir by name"),
+    ACTION_SHOW_TREE_WITH_STRINGS_IN_FILE ("show tree with amount of strings in the java files"),
     ACTION_SHOW_CURRENT_TREE ("show tree of current dir"),
     ACTION_CD ("change directory"),
     ACTION_CURRENT_DIR ("print current dir"),
